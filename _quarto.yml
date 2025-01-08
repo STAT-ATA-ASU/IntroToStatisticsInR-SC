@@ -1,0 +1,33 @@
+project:
+  type: book
+
+book:
+  title: "[Introduction to Statistics in R](https://app.datacamp.com/learn/courses/introduction-to-statistics-in-r)"
+  author: "[Your Name Here](your web url here)"
+  date: last-modified
+  date-format: "[Last modified on] MMMM DD, YYYY HH:mm:ss zzz"
+  chapters:
+    - index.qmd
+    - 01-ITSWR.qmd
+    - 02-ITSWR.qmd
+    #- 03-ITSWR.qmd
+    #- 04-ITSWR.qmd
+    - references.qmd
+
+execute:
+  warning: false
+
+
+bibliography: packages.bib
+
+format:
+  html:
+    theme: pulse
+    fig-width: 5
+    fig-height: 4
+    fig-align: "center"
+    code-fold: false
+  pdf:
+    documentclass: scrreprt
+
+editor: source

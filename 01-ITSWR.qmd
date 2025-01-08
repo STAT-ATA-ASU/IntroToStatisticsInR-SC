@@ -1,0 +1,247 @@
+# Summary Statistics
+
+
+```{r include=FALSE, message = FALSE, warning = FALSE}
+knitr::opts_chunk$set(echo = TRUE, comment = NA, fig.align = "center", fig.width = 4, fig.height = 4, message = FALSE, warning = FALSE)
+library(tidyverse)
+library(tidymodels)
+library(knitr)
+# Parallel Processing
+library(doMC)
+registerDoMC(cores = 20)
+```
+
+Summary statistics gives you the tools you need to boil down massive datasets to reveal the highlights. In this chapter, you'll explore summary statistics including mean, median, and standard deviation, and learn how to accurately interpret them. You'll also develop your critical thinking skills, allowing you to choose the best summary statistics for your data.
+
+
+## What is statistics? - video {-}
+<iframe src="https://drive.google.com/file/d/17EvdbKKKG4LSMFsSybFuo2Zm3LUoQNro/preview" width="640" height="480" allow="autoplay"></iframe>
+
+
+## Descriptive and inferential statistics 
+Statistics can be used to answer lots of different types of questions, but being able to identify which type of statistics is needed is essential to drawing accurate conclusions. In this exercise, you'll sharpen your skills by identifying which type is needed to answer each question.
+
+```{r, echo = FALSE}
+knitr::include_graphics("./pics/descinfer.png")
+```
+:::{.callout-note}
+Knowing the type of statistics you need to answer your question will help you choose the appropriate methods to get the most accurate answer possible.
+:::
+
+## Data type classification 
+In the video, you learned about two main types of data: numeric and categorical. Numeric variables can be classified as either discrete or continuous, and categorical variables can be classified as either nominal or ordinal. These characteristics of a variable determine which ways of summarizing your data will work best.
+
+```{r, echo = FALSE}
+knitr::include_graphics("./pics/datatype.png")
+```
+:::{.callout-note}
+These skills will be important when it comes to choosing summary statistics and visualizations.
+:::
+
+## Measures of center - video {-}
+<iframe src="https://drive.google.com/file/d/1utpCg2z0tJHW3A6IHfJvy4eXH6UIkq0l/preview" width="640" height="480" allow="autoplay"></iframe>
+
+
+## Mean and median 
+In this chapter, you'll be working with the `food_consumption` dataset from [2018 Food Carbon Footprint Index by nu3](https://www.nu3.de/blogs/nutrition/food-carbon-footprint-index-2018). The `food_consumption` dataset contains the number of kilograms of food consumed per person per year in each `country`, food category column `food_category`, the amount of `consumption`, and its carbon footprint (`co2_emissions`) measured in kilograms of carbon dioxide, or CO2.
+
+`dplyr` is loaded for you and `food_consumption` is available.
+
+```{r}
+food_consumption <- readRDS("./data/food_consumption.rds")
+food_consumption |> 
+  head() |> 
+  kable()
+```
+
+### Instructions {-}
+
+* Calculate the mean of food consumption in kilograms for all countries in the `food_consumption` dataset.
+
+```{r}
+food_consumption |> 
+  summarize(mean_consumption = mean(consumption))
+```
+
+* Calculate the median of food consumption in kilograms for all countries in the `food_consumption` dataset. Is it the same as the mean?
+
+```{r}
+food_consumption |> 
+  summarize(mean_consumption = mean(consumption),
+            median_consumption = median(consumption))
+```
+
+The mean of food consumption is `r round(mean(food_consumption$consumption),2)` kg. which is not the same as the median food consumption which is `r median(food_consumption$consumption)` kg.
+
+* Calculate the mode of consumption for all countries in the `food_consumption` dataset by counting and sorting values descending.
+
+```{r}
+# Calculate the mode of food consumption
+food_consumption |>  
+  count(consumption, sort = TRUE) -> MFC 
+MFC |> 
+  head() |> 
+  kable()
+```
+
+The mode of `consumption` is 0.00 kg.
+
+:::{.callout-note}
+You've calculated the mean, median, and mode of food consumption, offering valuable insights into consumption patterns.
+:::
+
+## Mean vs. median 
+In the video, you learned that the mean is the sum of all the data points divided by the total number of data points, and the median is the middle value of the dataset where 50% of the data is less than the median, and 50% of the data is greater than the median. In this exercise, you'll compare these two measures of center.
+
+The `dplyr` [@R-dplyr] and `ggplot2` [@R-ggplot2] packages are loaded and `food_consumption` is available.
+
+* Filter `food_consumption` to get the rows where `food_category` is `"rice"`.  Create a histogram of `co2_emission` for rice using the `ggplot()` function.
+
+```{r}
+food_consumption |> 
+  filter(food_category == "rice") |> 
+  ggplot(aes(x = co2_emission)) + 
+  geom_histogram(bins = 20, fill = "brown", color = "black") +
+  labs(title = "Rice carbon dioxide emissions",
+       x = "Carbon dioxide emmisions in kg/person/year") +
+  theme_bw()
+```
+
+Take a look at the histogram of the $\text{CO}_2$
+ emissions for rice you just plotted. Which of the following terms best describes the shape of the data?
+
+
+* No skew
+
+* Left-skewed
+
+* **Right-skewed**
+
+* Summarize the data to get the mean and median of `co2_emission`, calling them `mean_co2` and `median_co2`.
+
+```{r}
+food_consumption |> 
+  filter(food_category == "rice") |> 
+  summarize(mean_co2 = mean(co2_emission),
+            median_co2 = median(co2_emission))
+```
+
+Given the skew of this data, what measure of central tendency best summarizes the kilograms of $\text{CO}_2$
+ emissions per person per year for rice?
+
+* Mean
+
+* **Median**
+
+* Both mean and median
+
+:::{.callout-note}
+The mean is substantially higher than the median since it's being pulled up by the high values over 100 kg/person/year.
+:::
+
+## Measures of spread - video {-}
+<iframe src="https://drive.google.com/file/d/1VG71MXf4ZA3EIdflpULM6RmggauFTFRi/preview" width="640" height="480" allow="autoplay"></iframe>
+
+
+## Variance and standard deviation 
+Variance and standard deviation are two of the most common ways to measure the spread of a variable, and you'll practice calculating these in this exercise. Spread is important since it can help inform expectations. For example, if a salesperson sells a mean of 20 products a day, but has a standard deviation of 10 products, there will probably be days where he will sell 40 products, but also days where he will only sell one or two. Information like this is important, especially when making predictions.
+
+The `dplyr` and `ggplot2` packages are loaded, and `food_consumption` is available.
+
+### Instructions {-}
+
+* Calculate the variance of `co2_emission` in the `food_consumption` dataset.
+
+```{r}
+food_consumption |> 
+  summarize(var_co2_emission = var(co2_emission))
+```
+
+* Calculate the standard deviation of `co2_emission` in the `food_consumption` dataset.
+
+```{r}
+food_consumption |> 
+  summarize(var_co2_emission = var(co2_emission),
+            sd_co2_emission = sd(co2_emission))
+```
+
+
+## Quartiles, quantiles, and quintiles 
+Quantiles are a great way of summarizing numerical data since they can be used to measure center and spread, as well as to get a sense of where a data point stands in relation to the rest of the dataset. For example, you might want to give a discount to the 10% most active users on a website.
+
+In this exercise, you'll calculate quartiles, quintiles, and deciles, which split up a dataset into 4, 5, and 10 pieces, respectively.
+
+The `dplyr` package is loaded and `food_consumption` is available.
+
+### Instructions {-}
+
+* Calculate the quartiles of the `co2_emission` column of `food_consumption`.
+
+```{r}
+food_consumption |> 
+  summarize(Quartiles = quantile(co2_emission, probs = seq(0, 1, 0.25)))
+```
+
+* Calculate the quintiles of the `co2_emission` column of `food_consumption` that split up the data into 5 pieces.
+
+```{r}
+food_consumption |> 
+  summarize(Quintiles = quantile(co2_emission, probs = seq(0, 1, 0.20)))
+```
+
+* Calculate the quantiles of `co2_emission` that split up the data into ten pieces.
+
+```{r}
+food_consumption |> 
+  summarize(Deciles = quantile(co2_emission, probs = seq(0, 1, 0.10)))
+```
+
+:::{.callout-note}
+While calculating more quantiles gives you a more detailed look at the data, it also produces more numbers, making the summary more difficult to quickly understand.
+:::
+
+## Finding outliers using IQR
+Interquartile range, or IQR, is another way of measuring spread that's less influenced by outliers. IQR is also often used to find outliers. If a value is less than 
+$\text{Q}_1 - 1.5 \times \text{IQR}$ or greater than 
+$\text{Q}_3 + 1.5 \times \text{IQR}$, it's considered an outlier. In fact, this is how the lengths of the whiskers in a `ggplot2` box plot are calculated.
+
+```{r, echo = FALSE}
+include_graphics("./pics/boxplot.png")
+```
+
+In this exercise, you'll calculate IQR and use it to find some outliers. Both `dplyr` and `ggplot2` packages are loaded and `food_consumption` is available.
+
+### Instructions {-}
+
+* Compute the first and third quartiles of `co2_emission` in `food_consumption` and store these as `q1` and `q3`.  Calculate the interquartile range (IQR) of `co2_emission` and store it as `iqr`.
+
+```{r}
+food_consumption |> 
+  summarize(q1 = quantile(co2_emission, prob = 0.25),
+            q3 = quantile(co2_emission, prob = 0.75),
+            iqr = IQR(co2_emission))
+```
+
+* Calculate the lower and upper cutoffs for outliers of `co2_emission`, and store these as `lower` and `upper`.
+
+```{r}
+food_consumption |> 
+  summarize(q1 = quantile(co2_emission, prob = 0.25),
+            q3 = quantile(co2_emission, prob = 0.75),
+            iqr = IQR(co2_emission)) |> 
+  mutate(lower = q1 - 1.5*iqr,
+         upper = q3 + 1.5*iqr) -> ans 
+kable(ans)
+```
+
+* Use `filter()` to get countries with a `co2_emission` greater than the upper cutoff or a `co2_emission` less than the lower cutoff.
+
+```{r}
+food_consumption |> 
+  filter(co2_emission > ans$upper |
+         co2_emission < ans$lower)
+```
+
+:::{.callout-note}
+You've successfully calculated the IQR, and outlier cutoffs for $\text{CO}_2$ emissions, and identified the outlier items with unusually high or low emissions. This analysis is key to understanding the impact of food consumption on the environment.
+:::

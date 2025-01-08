@@ -1,0 +1,12 @@
+# Random Numbers and Probability
+
+
+```{r include=FALSE, message = FALSE, warning = FALSE}
+knitr::opts_chunk$set(echo = TRUE, comment = NA, fig.align = "center", fig.width = 4, fig.height = 4, message = FALSE, warning = FALSE)
+library(tidyverse)
+library(tidymodels)
+library(knitr)
+# Parallel Processing
+library(doMC)
+registerDoMC(cores = 20)
+```
