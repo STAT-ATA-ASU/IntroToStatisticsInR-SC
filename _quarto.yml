@@ -1,5 +1,6 @@
 project:
   type: book
+  output-dir: docs
 
 book:
   title: "[Introduction to Statistics in R](https://app.datacamp.com/learn/courses/introduction-to-statistics-in-r)"

@@ -1,0 +1,86 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Introduction to Statistics in R",
+    "section": "",
+    "text": "Preface\nThis material is from the DataCamp course Introduction to Statistics in R by Maggie Matsui.\nCourse Description: Statistics is the study of how to collect, analyze, and draw conclusions from data. It’s a hugely valuable tool that you can use to bring the future into focus and infer the answer to tons of questions. For example, what is the likelihood of someone purchasing your product, how many calls will your support team receive, and how many jeans sizes should you manufacture to fit 95% of the population? In this course, you’ll use sales data to discover how to answer questions like these as you grow your statistical skills and learn how to calculate averages, use scatterplots to show the relationship between numeric values, and calculate correlation. You’ll also tackle probability, the backbone of statistical reasoning, and learn how to conduct a well-designed study to draw your own conclusions from data.\nReminder to self: each *.qmd file contains one and only one chapter, and a chapter is defined by the first-level heading #."
+  },
+  {
+    "objectID": "01-ITSWR.html#what-is-statistics---video",
+    "href": "01-ITSWR.html#what-is-statistics---video",
+    "title": "1  Summary Statistics",
+    "section": "What is statistics? - video",
+    "text": "What is statistics? - video"
+  },
+  {
+    "objectID": "01-ITSWR.html#descriptive-and-inferential-statistics",
+    "href": "01-ITSWR.html#descriptive-and-inferential-statistics",
+    "title": "1  Summary Statistics",
+    "section": "1.1 Descriptive and inferential statistics",
+    "text": "1.1 Descriptive and inferential statistics\nStatistics can be used to answer lots of different types of questions, but being able to identify which type of statistics is needed is essential to drawing accurate conclusions. In this exercise, you’ll sharpen your skills by identifying which type is needed to answer each question.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\n\nKnowing the type of statistics you need to answer your question will help you choose the appropriate methods to get the most accurate answer possible."
+  },
+  {
+    "objectID": "01-ITSWR.html#data-type-classification",
+    "href": "01-ITSWR.html#data-type-classification",
+    "title": "1  Summary Statistics",
+    "section": "1.2 Data type classification",
+    "text": "1.2 Data type classification\nIn the video, you learned about two main types of data: numeric and categorical. Numeric variables can be classified as either discrete or continuous, and categorical variables can be classified as either nominal or ordinal. These characteristics of a variable determine which ways of summarizing your data will work best.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\n\nThese skills will be important when it comes to choosing summary statistics and visualizations."
+  },
+  {
+    "objectID": "01-ITSWR.html#measures-of-center---video",
+    "href": "01-ITSWR.html#measures-of-center---video",
+    "title": "1  Summary Statistics",
+    "section": "Measures of center - video",
+    "text": "Measures of center - video"
+  },
+  {
+    "objectID": "01-ITSWR.html#mean-and-median",
+    "href": "01-ITSWR.html#mean-and-median",
+    "title": "1  Summary Statistics",
+    "section": "1.3 Mean and median",
+    "text": "1.3 Mean and median\nIn this chapter, you’ll be working with the food_consumption dataset from 2018 Food Carbon Footprint Index by nu3. The food_consumption dataset contains the number of kilograms of food consumed per person per year in each country, food category column food_category, the amount of consumption, and its carbon footprint (co2_emissions) measured in kilograms of carbon dioxide, or CO2.\ndplyr is loaded for you and food_consumption is available.\n\nfood_consumption &lt;- readRDS(\"./data/food_consumption.rds\")\nfood_consumption |&gt; \n  head() |&gt; \n  kable()\n\n\n\n\ncountry\nfood_category\nconsumption\nco2_emission\n\n\n\n\nArgentina\npork\n10.51\n37.20\n\n\nArgentina\npoultry\n38.66\n41.53\n\n\nArgentina\nbeef\n55.48\n1712.00\n\n\nArgentina\nlamb_goat\n1.56\n54.63\n\n\nArgentina\nfish\n4.36\n6.96\n\n\nArgentina\neggs\n11.39\n10.46\n\n\n\n\n\n\nInstructions\n\nCalculate the mean of food consumption in kilograms for all countries in the food_consumption dataset.\n\n\nfood_consumption |&gt; \n  summarize(mean_consumption = mean(consumption))\n\n# A tibble: 1 × 1\n  mean_consumption\n             &lt;dbl&gt;\n1             28.1\n\n\n\nCalculate the median of food consumption in kilograms for all countries in the food_consumption dataset. Is it the same as the mean?\n\n\nfood_consumption |&gt; \n  summarize(mean_consumption = mean(consumption),\n            median_consumption = median(consumption))\n\n# A tibble: 1 × 2\n  mean_consumption median_consumption\n             &lt;dbl&gt;              &lt;dbl&gt;\n1             28.1               8.89\n\n\nThe mean of food consumption is 28.11 kg. which is not the same as the median food consumption which is 8.89 kg.\n\nCalculate the mode of consumption for all countries in the food_consumption dataset by counting and sorting values descending.\n\n\n# Calculate the mode of food consumption\nfood_consumption |&gt;  \n  count(consumption, sort = TRUE) -&gt; MFC \nMFC |&gt; \n  head() |&gt; \n  kable()\n\n\n\n\nconsumption\nn\n\n\n\n\n0.00\n31\n\n\n0.01\n18\n\n\n0.02\n13\n\n\n0.04\n11\n\n\n0.05\n7\n\n\n0.94\n5\n\n\n\n\n\nThe mode of consumption is 0.00 kg.\n\n\n\n\n\n\nNote\n\n\n\nYou’ve calculated the mean, median, and mode of food consumption, offering valuable insights into consumption patterns."
+  },
+  {
+    "objectID": "01-ITSWR.html#mean-vs.-median",
+    "href": "01-ITSWR.html#mean-vs.-median",
+    "title": "1  Summary Statistics",
+    "section": "1.4 Mean vs. median",
+    "text": "1.4 Mean vs. median\nIn the video, you learned that the mean is the sum of all the data points divided by the total number of data points, and the median is the middle value of the dataset where 50% of the data is less than the median, and 50% of the data is greater than the median. In this exercise, you’ll compare these two measures of center.\nThe dplyr (Wickham et al. 2023) and ggplot2 (Wickham et al. 2024) packages are loaded and food_consumption is available.\n\nFilter food_consumption to get the rows where food_category is \"rice\". Create a histogram of co2_emission for rice using the ggplot() function.\n\n\nfood_consumption |&gt; \n  filter(food_category == \"rice\") |&gt; \n  ggplot(aes(x = co2_emission)) + \n  geom_histogram(bins = 20, fill = \"brown\", color = \"black\") +\n  labs(title = \"Rice carbon dioxide emissions\",\n       x = \"Carbon dioxide emmisions in kg/person/year\") +\n  theme_bw()\n\n\n\n\n\n\n\n\nTake a look at the histogram of the \\(\\text{CO}_2\\) emissions for rice you just plotted. Which of the following terms best describes the shape of the data?\n\nNo skew\nLeft-skewed\nRight-skewed\nSummarize the data to get the mean and median of co2_emission, calling them mean_co2 and median_co2.\n\n\nfood_consumption |&gt; \n  filter(food_category == \"rice\") |&gt; \n  summarize(mean_co2 = mean(co2_emission),\n            median_co2 = median(co2_emission))\n\n# A tibble: 1 × 2\n  mean_co2 median_co2\n     &lt;dbl&gt;      &lt;dbl&gt;\n1     37.6       15.2\n\n\nGiven the skew of this data, what measure of central tendency best summarizes the kilograms of \\(\\text{CO}_2\\) emissions per person per year for rice?\n\nMean\nMedian\nBoth mean and median\n\n\n\n\n\n\n\nNote\n\n\n\nThe mean is substantially higher than the median since it’s being pulled up by the high values over 100 kg/person/year."
+  },
+  {
+    "objectID": "01-ITSWR.html#measures-of-spread---video",
+    "href": "01-ITSWR.html#measures-of-spread---video",
+    "title": "1  Summary Statistics",
+    "section": "Measures of spread - video",
+    "text": "Measures of spread - video"
+  },
+  {
+    "objectID": "01-ITSWR.html#variance-and-standard-deviation",
+    "href": "01-ITSWR.html#variance-and-standard-deviation",
+    "title": "1  Summary Statistics",
+    "section": "1.5 Variance and standard deviation",
+    "text": "1.5 Variance and standard deviation\nVariance and standard deviation are two of the most common ways to measure the spread of a variable, and you’ll practice calculating these in this exercise. Spread is important since it can help inform expectations. For example, if a salesperson sells a mean of 20 products a day, but has a standard deviation of 10 products, there will probably be days where he will sell 40 products, but also days where he will only sell one or two. Information like this is important, especially when making predictions.\nThe dplyr and ggplot2 packages are loaded, and food_consumption is available.\n\nInstructions\n\nCalculate the variance of co2_emission in the food_consumption dataset.\n\n\nfood_consumption |&gt; \n  summarize(var_co2_emission = var(co2_emission))\n\n# A tibble: 1 × 1\n  var_co2_emission\n             &lt;dbl&gt;\n1           23134.\n\n\n\nCalculate the standard deviation of co2_emission in the food_consumption dataset.\n\n\nfood_consumption |&gt; \n  summarize(var_co2_emission = var(co2_emission),\n            sd_co2_emission = sd(co2_emission))\n\n# A tibble: 1 × 2\n  var_co2_emission sd_co2_emission\n             &lt;dbl&gt;           &lt;dbl&gt;\n1           23134.            152."
+  },
+  {
+    "objectID": "01-ITSWR.html#quartiles-quantiles-and-quintiles",
+    "href": "01-ITSWR.html#quartiles-quantiles-and-quintiles",
+    "title": "1  Summary Statistics",
+    "section": "1.6 Quartiles, quantiles, and quintiles",
+    "text": "1.6 Quartiles, quantiles, and quintiles\nQuantiles are a great way of summarizing numerical data since they can be used to measure center and spread, as well as to get a sense of where a data point stands in relation to the rest of the dataset. For example, you might want to give a discount to the 10% most active users on a website.\nIn this exercise, you’ll calculate quartiles, quintiles, and deciles, which split up a dataset into 4, 5, and 10 pieces, respectively.\nThe dplyr package is loaded and food_consumption is available.\n\nInstructions\n\nCalculate the quartiles of the co2_emission column of food_consumption.\n\n\nfood_consumption |&gt; \n  summarize(Quartiles = quantile(co2_emission, probs = seq(0, 1, 0.25)))\n\n# A tibble: 5 × 1\n  Quartiles\n      &lt;dbl&gt;\n1      0   \n2      5.21\n3     16.5 \n4     62.6 \n5   1712   \n\n\n\nCalculate the quintiles of the co2_emission column of food_consumption that split up the data into 5 pieces.\n\n\nfood_consumption |&gt; \n  summarize(Quintiles = quantile(co2_emission, probs = seq(0, 1, 0.20)))\n\n# A tibble: 6 × 1\n  Quintiles\n      &lt;dbl&gt;\n1      0   \n2      3.54\n3     11.0 \n4     25.6 \n5    100.  \n6   1712   \n\n\n\nCalculate the quantiles of co2_emission that split up the data into ten pieces.\n\n\nfood_consumption |&gt; \n  summarize(Deciles = quantile(co2_emission, probs = seq(0, 1, 0.10)))\n\n# A tibble: 11 × 1\n    Deciles\n      &lt;dbl&gt;\n 1    0    \n 2    0.668\n 3    3.54 \n 4    7.04 \n 5   11.0  \n 6   16.5  \n 7   25.6  \n 8   44.3  \n 9  100.   \n10  204.   \n11 1712    \n\n\n\n\n\n\n\n\nNote\n\n\n\nWhile calculating more quantiles gives you a more detailed look at the data, it also produces more numbers, making the summary more difficult to quickly understand."
+  },
+  {
+    "objectID": "01-ITSWR.html#finding-outliers-using-iqr",
+    "href": "01-ITSWR.html#finding-outliers-using-iqr",
+    "title": "1  Summary Statistics",
+    "section": "1.7 Finding outliers using IQR",
+    "text": "1.7 Finding outliers using IQR\nInterquartile range, or IQR, is another way of measuring spread that’s less influenced by outliers. IQR is also often used to find outliers. If a value is less than \\(\\text{Q}_1 - 1.5 \\times \\text{IQR}\\) or greater than \\(\\text{Q}_3 + 1.5 \\times \\text{IQR}\\), it’s considered an outlier. In fact, this is how the lengths of the whiskers in a ggplot2 box plot are calculated.\n\n\n\n\n\n\n\n\n\nIn this exercise, you’ll calculate IQR and use it to find some outliers. Both dplyr and ggplot2 packages are loaded and food_consumption is available.\n\nInstructions\n\nCompute the first and third quartiles of co2_emission in food_consumption and store these as q1 and q3. Calculate the interquartile range (IQR) of co2_emission and store it as iqr.\n\n\nfood_consumption |&gt; \n  summarize(q1 = quantile(co2_emission, prob = 0.25),\n            q3 = quantile(co2_emission, prob = 0.75),\n            iqr = IQR(co2_emission))\n\n# A tibble: 1 × 3\n     q1    q3   iqr\n  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;\n1  5.21  62.6  57.4\n\n\n\nCalculate the lower and upper cutoffs for outliers of co2_emission, and store these as lower and upper.\n\n\nfood_consumption |&gt; \n  summarize(q1 = quantile(co2_emission, prob = 0.25),\n            q3 = quantile(co2_emission, prob = 0.75),\n            iqr = IQR(co2_emission)) |&gt; \n  mutate(lower = q1 - 1.5*iqr,\n         upper = q3 + 1.5*iqr) -&gt; ans \nkable(ans)\n\n\n\n\nq1\nq3\niqr\nlower\nupper\n\n\n\n\n5.21\n62.5975\n57.3875\n-80.87125\n148.6788\n\n\n\n\n\n\nUse filter() to get countries with a co2_emission greater than the upper cutoff or a co2_emission less than the lower cutoff.\n\n\nfood_consumption |&gt; \n  filter(co2_emission &gt; ans$upper |\n         co2_emission &lt; ans$lower)\n\n# A tibble: 208 × 4\n   country   food_category consumption co2_emission\n   &lt;chr&gt;     &lt;fct&gt;               &lt;dbl&gt;        &lt;dbl&gt;\n 1 Argentina beef                55.5         1712 \n 2 Argentina dairy              195.           278.\n 3 Australia beef                33.9         1045.\n 4 Australia lamb_goat            9.87         346.\n 5 Australia dairy              234.           334.\n 6 Albania   beef                22.5          694.\n 7 Albania   lamb_goat           15.3          536.\n 8 Albania   dairy              304.           433.\n 9 Iceland   beef                13.4          412.\n10 Iceland   lamb_goat           21.1          740.\n# ℹ 198 more rows\n\n\n\n\n\n\n\n\nNote\n\n\n\nYou’ve successfully calculated the IQR, and outlier cutoffs for \\(\\text{CO}_2\\) emissions, and identified the outlier items with unusually high or low emissions. This analysis is key to understanding the impact of food consumption on the environment.\n\n\n\n\n\n\nWickham, Hadley, Winston Chang, Lionel Henry, Thomas Lin Pedersen, Kohske Takahashi, Claus Wilke, Kara Woo, Hiroaki Yutani, Dewey Dunnington, and Teun van den Brand. 2024. Ggplot2: Create Elegant Data Visualisations Using the Grammar of Graphics. https://ggplot2.tidyverse.org.\n\n\nWickham, Hadley, Romain François, Lionel Henry, Kirill Müller, and Davis Vaughan. 2023. Dplyr: A Grammar of Data Manipulation. https://dplyr.tidyverse.org."
+  },
+  {
+    "objectID": "references.html",
+    "href": "references.html",
+    "title": "References",
+    "section": "",
+    "text": "Wickham, Hadley, Winston Chang, Lionel Henry, Thomas Lin Pedersen,\nKohske Takahashi, Claus Wilke, Kara Woo, Hiroaki Yutani, Dewey\nDunnington, and Teun van den Brand. 2024. Ggplot2: Create Elegant\nData Visualisations Using the Grammar of Graphics. https://ggplot2.tidyverse.org.\n\n\nWickham, Hadley, Romain François, Lionel Henry, Kirill Müller, and Davis\nVaughan. 2023. Dplyr: A Grammar of Data Manipulation. https://dplyr.tidyverse.org."
+  }
+]
