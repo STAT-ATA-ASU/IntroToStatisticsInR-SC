@@ -8,5 +8,5 @@ library(tidymodels)
 library(knitr)
 # Parallel Processing
 library(doMC)
-registerDoMC(cores = 20)
+registerDoMC(cores = 12)
 ```

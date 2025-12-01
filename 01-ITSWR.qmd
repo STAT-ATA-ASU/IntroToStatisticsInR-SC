@@ -8,7 +8,7 @@ library(tidymodels)
 library(knitr)
 # Parallel Processing
 library(doMC)
-registerDoMC(cores = 20)
+registerDoMC(cores = 12)
 ```
 
 Summary statistics gives you the tools you need to boil down massive datasets to reveal the highlights. In this chapter, you'll explore summary statistics including mean, median, and standard deviation, and learn how to accurately interpret them. You'll also develop your critical thinking skills, allowing you to choose the best summary statistics for your data.
